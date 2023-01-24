@@ -26,7 +26,7 @@ public class Uri2611Application implements CommandLineRunner {
 		List<MovieMinProjection> list = repository.search1("Action");
 		List<MovieMinDto> result1= list.stream().map(x -> new MovieMinDto(x)).collect(Collectors.toList());
 
-		System.out.println("\n ***** RESULT SQL RAIZ: ");
+		System.out.println("\n\n ***** RESULT SQL RAIZ: ");
 		for (MovieMinDto obj: result1){
 			System.out.println(obj);
 		}
