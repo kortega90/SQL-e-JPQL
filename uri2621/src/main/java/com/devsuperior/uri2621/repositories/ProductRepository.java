@@ -12,12 +12,15 @@ import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
-    @Override
-    @Query(nativeQuery = true,value = "SELECT public.products.name " +
-            "FROM public.products" +
-            "INNER JOIN public.providers ON id_providers = public.providers.id " +
-            "WHERE UPPER (providers.name) LIKE UPPER ('P%')" +
-            "AND amount BETWEEN 10 AND 20 ")
-    List<ProductProjection> search1();
-
+    @Query(nativeQuery = true,value = "SELECT products.name " +
+            "FROM products " +
+            "INNER JOIN providers ON id_providers = providers.id " +
+            "WHERE UPPER (providers.name) LIKE UPPER(CONCAT(:chart,'%')) "+
+            "AND amount BETWEEN :min AND :max")
+    List<ProductProjection> search1(Integer min,Integer max,String chart);
+    @Query ("SELECT new com.devsuperior.uri2621.dto.ProductMinDto (obj.name) " +
+            "FROM Product obj " +
+            "WHERE UPPER (obj.provider.name) LIKE UPPER(CONCAT(:chart,'%')) "+
+            "AND obj.amount BETWEEN :min AND :max")
+    List<ProductMinDto> search2(Integer min,Integer max,String chart);
 }
